@@ -22,7 +22,6 @@
 
         await Assets.init({ manifest }).then(async () => {
             const bundleNames = manifest.bundles.map((bundle) => bundle.name);
-            console.log(bundleNames);
 
             await Promise.all(
                 bundleNames.map(async (bundleName) => {
