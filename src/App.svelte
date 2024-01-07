@@ -1,14 +1,16 @@
 <script lang="ts">
-    import { Application } from "pixi.js";
+    import { Application, Assets } from "pixi.js";
     import { afterUpdate, onDestroy, onMount } from "svelte";
     import { welcomeMessage } from "./store";
     import Bunny from "./components/Bunny.svelte";
+    import { manifest } from "./manifest";
+
     let pixiContainer;
 
     let app: Application;
     let appLoaded;
 
-    onMount(() => {
+    onMount(async () => {
         app = new Application({
             width: 300,
             height: 300,
@@ -18,7 +20,18 @@
         app.stage.interactiveChildren = false;
         app.stage.sortableChildren = true;
 
-        appLoaded = true;
+        await Assets.init({ manifest }).then(async () => {
+            const bundleNames = manifest.bundles.map((bundle) => bundle.name);
+            console.log(bundleNames);
+
+            await Promise.all(
+                bundleNames.map(async (bundleName) => {
+                    await Assets.loadBundle(bundleName);
+                })
+            );
+
+            appLoaded = true;
+        });
     });
 
     afterUpdate(() => {

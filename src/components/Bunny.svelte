@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Application, Sprite } from "pixi.js";
+    import { Application, Assets, Sprite } from "pixi.js";
     import { afterUpdate, onDestroy, onMount } from "svelte";
 
     export let app: Application;
@@ -24,7 +24,7 @@
     function setup() {
         const stage = app.stage;
 
-        bunny = Sprite.from("https://pixijs.com/assets/bunny.png");
+        bunny = Sprite.from(Assets.get("bunny"));
 
         bunny.position.set(0, 0);
         bunny.anchor.set(0);
